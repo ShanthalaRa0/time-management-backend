@@ -39,7 +39,6 @@ public class UserSearchAllDto extends BaseDto {
 
 		// プロパティ(メンバ変数)の宣言
 	    private Integer userId;
-		private String loginUser;
 		private String userName;
 	}
 	@Data
@@ -52,11 +51,11 @@ public class UserSearchAllDto extends BaseDto {
 
 		// プロパティ(メンバ変数)の宣言
 		private Integer userId;
-		private String loginUser;
-		private String userName;
-		private LocalDate startDate;
-		private LocalDate endDate;
+		private String firstName;
+	    private String lastName;
 		private String email;
+		private byte role;
+		private byte active;
 
 	}
 }

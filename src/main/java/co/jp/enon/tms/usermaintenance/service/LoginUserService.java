@@ -116,6 +116,8 @@ public class LoginUserService implements UserDetailsService {
 
 	    PtUser user = new PtUser();
 	    user.setEmail(reqHd.getEmail());
+	    user.setFirstName(reqHd.getFirstName());
+	    user.setLastName(reqHd.getLastName());
 	    // Encode the password with BCrypt
         String encodedPassword = passwordEncoder.encode(reqHd.getPassword());
         user.setPassword(encodedPassword);
@@ -166,7 +168,7 @@ public class LoginUserService implements UserDetailsService {
         String encodedPassword = passwordEncoder.encode(newPassword);
         user.setPassword(encodedPassword);
         user.setResetPasswordToken(null); // clear token
-        ptUserDao.save(user);
+        ptUserDao.updatePassword(user);
         return "Password reset successfully!";
     } 	
 

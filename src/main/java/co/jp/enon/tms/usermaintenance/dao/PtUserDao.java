@@ -25,6 +25,8 @@ public class PtUserDao {
         public PtUser mapRow(ResultSet rs, int rowNum) throws SQLException {
             PtUser user = new PtUser();
             user.setUserId(rs.getInt("user_id"));
+            user.setFirstName(rs.getString("first_name"));
+            user.setLastName(rs.getString("last_name"));
             user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
             user.setResetPasswordToken(rs.getString("reset_password_token"));
@@ -54,12 +56,22 @@ public class PtUserDao {
 
     // Insert new user
     public int save(PtUser user) {
-        String sql = "INSERT INTO pt_user (email, password, role, active, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())";
-        return jdbcTemplate.update(sql, user.getEmail(), user.getPassword(), user.getRole(), user.getActive());
+        String sql = "INSERT INTO pt_user (email, first_name, last_name, password, role, active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
+        return jdbcTemplate.update(sql, user.getEmail(), user.getFirstName(), user.getLastName(), user.getPassword(), user.getRole(), user.getActive());
     }
     
     public int updateToken(PtUser user) {
         String sql = "UPDATE pt_user SET reset_password_token = ? WHERE email = ?";
         return jdbcTemplate.update(sql, user.getResetPasswordToken(), user.getEmail());
+    }
+    
+    public int updatePassword (PtUser user) {
+    	String sql = "UPDATE pt_user SET password = ?, reset_password_token = ? WHERE email = ?";
+        return jdbcTemplate.update(sql, user.getPassword(), user.getResetPasswordToken(), user.getEmail());
+    }
+    
+    public int delete(String email) {
+        String sql = "UPDATE pt_user SET active = ? WHERE email = ?";
+        return jdbcTemplate.update(sql, 1, email);
     }
 }

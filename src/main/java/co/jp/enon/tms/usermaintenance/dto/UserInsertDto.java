@@ -33,7 +33,8 @@ public class UserInsertDto extends BaseDto {
 		// プロパティ(メンバ変数)の宣言
 		private String password;
 		private String email;
-		private String resetPasswordToken;
+		private String firstName;
+		private String lastName;
 		private Byte role;
 		private Boolean active;
 	}

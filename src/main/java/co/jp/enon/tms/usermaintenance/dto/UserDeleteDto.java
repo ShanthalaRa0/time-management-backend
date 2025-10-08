@@ -31,6 +31,6 @@ public class UserDeleteDto extends BaseDto {
 	    public RequestHd() {}
 
 		// プロパティ(メンバ変数)の宣言
-		private Integer userId;
+		private String email;
 	}
 }

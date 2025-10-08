@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.jp.enon.tms.common.BaseService;
+import co.jp.enon.tms.common.exception.OptimisticLockException;
 import co.jp.enon.tms.usermaintenance.dao.PtUserDao;
 import co.jp.enon.tms.usermaintenance.dto.UserDeleteDto;
 import co.jp.enon.tms.usermaintenance.dto.UserSearchAllDto;
@@ -32,18 +33,6 @@ public class UserService extends BaseService {
 	@Autowired
     private PtUserDao ptUserDao;
 	
-
-//	@Autowired
-//	PvUserMonthReportMapper pvUserMonthReportMapper;
-//
-//	@Autowired
-//	PvUserMonthOrderMapper pvUserMonthOrderMapper;
-//
-//	@Autowired
-//	PvUserCompanyUserMapper pvUserCompanyUserMapper;
-
-	
-
 	// Users search
 	public void searchMany(UserSearchManyDto userSearchManyDto) throws Exception {
 		logger.debug(this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -112,6 +101,8 @@ public class UserService extends BaseService {
             if (StringUtils.isNotEmpty(user.getEmail())) {
             	resDt.setEmail(user.getEmail());
             }
+            resDt.setFirstName(user.getFirstName());
+            resDt.setLastName(user.getLastName());
             resDt.setPassword(user.getPassword());
             resDt.setResetPasswordToken(user.getResetPasswordToken());
             resDt.setActive(user.getActive());
@@ -159,10 +150,10 @@ public class UserService extends BaseService {
 
 		UserDeleteDto.RequestHd reqHd = userDeleteDto.getReqHd();
 		// user delete
-//		int cnt = ptUserDao.deleteUpdate(reqHd.getUserId(), (byte) 1);
-//		if (cnt == 0) {
-//			throw new OptimisticLockException("delete pt_user");
-//		}
+		int cnt = ptUserDao.delete(reqHd.getEmail());
+		if (cnt == 0) {
+			throw new OptimisticLockException("delete pt_user");
+		}
 		userDeleteDto.setResultCode("000");
 		return;
 	}
@@ -170,24 +161,27 @@ public class UserService extends BaseService {
 	public void searchAllUsers(UserSearchAllDto userSearchAllDto) throws Exception {
 		logger.debug(this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName());
 
-//		UserSearchAllDto.RequestHd reqHd = userSearchAllDto.getReqHd();
-//		List<PtUser> listPtUser = ptUserDao.selecAll();
-//
-//		List<UserSearchAllDto.ResponseDt> listResDt = userSearchAllDto.getResDt();
-//		for (Iterator<PtUser> it = listPtUser.iterator(); it.hasNext();) {
-//			PtUser ptUser = it.next();
-//
-//			UserSearchAllDto.ResponseDt resDt = new UserSearchAllDto.ResponseDt();
-//			resDt.setUserId(ptUser.getUserId());
-//			resDt.setEmail(ptUser.getEmail());
-//			listResDt.add(resDt);
-//		}
-		makeResponseTitle(userSearchAllDto);
-//		if (listResDt.size() > 0) {
-//			userSearchAllDto.setResultCode("000");
-//		} else {
-//			userSearchAllDto.setResultCode("001");
-//		}
+		UserSearchAllDto.RequestHd reqHd = userSearchAllDto.getReqHd();
+		List<PtUser> listPtUser = ptUserDao.findAll();
+
+		List<UserSearchAllDto.ResponseDt> listResDt = userSearchAllDto.getResDt();
+		for (Iterator<PtUser> it = listPtUser.iterator(); it.hasNext();) {
+			PtUser ptUser = it.next();
+			UserSearchAllDto.ResponseDt resDt = new UserSearchAllDto.ResponseDt();
+			resDt.setUserId(ptUser.getUserId());
+		    resDt.setFirstName(ptUser.getFirstName());
+		    resDt.setLastName(ptUser.getLastName());
+			resDt.setEmail(ptUser.getEmail());
+			resDt.setRole(ptUser.getRole());
+			resDt.setActive(ptUser.getActive());
+			listResDt.add(resDt);
+		}
+//		makeResponseTitle(userSearchAllDto);
+		if (listResDt.size() > 0) {
+			userSearchAllDto.setResultCode("000");
+		} else {
+			userSearchAllDto.setResultCode("001");
+		}
 		return;
 	}
 

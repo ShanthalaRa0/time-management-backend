@@ -53,7 +53,8 @@ public class UserSearchOneDto extends BaseDto {
 
 		// プロパティ(メンバ変数)の宣言
 		private Integer userId;
-	
+	    private String firstName;
+	    private String lastName;
 		private String email;
 		private String password;
 		private String resetPasswordToken;

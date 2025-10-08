@@ -50,13 +50,12 @@ public class UserSearchManyDto extends BaseDto {
 	    public ResponseDt() {}
 
 		// プロパティ(メンバ変数)の宣言
-		private Integer userId;
-
-		private String email;
-		private String sei;
-		
+	    private Integer userId;
+	    private String firstName;
+	    private String lastName;
+		private String email;	
+		private byte role;
 		private byte active;
-		private Boolean role;
 		private LocalDateTime createdAt;
 		private LocalDateTime updatedAt;
 
