@@ -1,0 +1,29 @@
+# OS files
+.DS_Store
+
+# Eclipse / IDE files
+.classpath
+.project
+.factorypath
+.settings/
+.metadata/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Build output
+/target/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+
+# Environment or secret files
+.env
+
+# Extra
+/Mysql/

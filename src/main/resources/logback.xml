@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE logback>
+<configuration>
+
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+	<property name="LOG_DIR" value="C:/logs" />
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<!-- output Above DEBUG level errors - ERROR > WARN > INFO > DEBUG(default) > TRACE -->
+			<level>DEBUG</level>
+		</filter>
+	    <encoder>
+	      	<!-- pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%5p) ${PID} - [%15thread] %.logger{35} -A- %msg %n</pattern -->
+	      	<!-- include resource="org/springframework/boot/logging/logback/base.xml"/ same as STDOUT output -->
+	      	<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%5p) %magenta(${PID}) --- [%-15.15thread] %cyan(%-40.40logger) : %msg %n</pattern>
+	    </encoder>
+	</appender>
+
+	<!-- appender name="FILE" class="ch.qos.logback.core.FileAppender" -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<file>${LOG_DIR}/Console.log</file>
+	 	<filter class="ch.qos.logback.classic.filter.ThresholdFilter" >
+			<!-- output Above DEBUG level errors -ERROR > WARN > INFO > DEBUG > TRACE -->
+			<level>DEBUG</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		    <fileNamePattern>${LOG_DIR}/Console.log.%d{yyyyMMdd}.gz</fileNamePattern>
+		    <maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level ${PID} [%thread] -B- %msg %n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.hibernate" level="ERROR"/>
+	<logger name="org.springframework" level="INFO"/>
+	<logger name="org.thymeleaf" level="INFO"/>
+
+	<!-- Set the HikariPool logging level to WARN or higher to prevent connection logs from being output at regular intervals.-->
+	<logger name="com.zaxxer.hikari" level="WARN"/>
+
+	<root>
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</root>
+
+	<!-- RestController Settings to output a log when receiving data containing JSON and when returning data containing JSON-->
+	<appender name="RESTCONTROLLER_LOGGING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+       	<!--  file>${LOG_PATH}/RestController.log</file> -->
+       	<file>${LOG_DIR}/RestController.log</file>
+  	<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+		<!-- output Above WARN level errors 。ERROR > WARN > INFO > DEBUG > TRACE -->
+      	<level>WARN</level>
+    </filter>
+       <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+           <!-- fileNamePattern>${LOG_PATH}/RestController.log.%d{yyyyMMdd}.gz</fileNamePattern> -->
+           <fileNamePattern>${LOG_DIR}/RestController.log.%d{yyyyMMdd}.gz</fileNamePattern>
+           <maxHistory>30</maxHistory>
+       </rollingPolicy>
+       <encoder>
+           <!-- charset>UTF-8</charset><charset>SJIS</charset><charset>UTF-16</charset><charset>UNICODE</charset><charset>EUC</charset -->
+           <charset>UTF-8</charset>
+           <!--  pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level ${PID} [%t]%X{request_thread} %logger{45}:%L -C- %msg %n</pattern -->
+           <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level ${PID} [%t]%X{request_thread} -- %msg%n</pattern>
+       </encoder>
+   </appender>
+
+    <logger name="co.jp.arche1.kpms.common.LoggingRestController" additivity="false" level="DEBUG">
+        <appender-ref ref="RESTCONTROLLER_LOGGING_FILE"/>
+    </logger>
+
+	<!-- Settings to output logs before and after calling the Service process -->
+    <appender name="SERVICE_LOGGING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--  file>${LOG_PATH}/Service.log</file> -->
+        <file>${LOG_DIR}/Service.log</file>
+	  	<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<!-- output Errors above INFO level - ERROR > WARN > INFO > DEBUG > TRACE -->
+	      	<level>INFO</level>
+	    </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/Service.log.%d{yyyyMMdd}.gz</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <!-- pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level ${PID} [%t]%X{request_thread} %logger{45}:%L -D- %msg %n</pattern -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level ${PID} [%t]%X{request_thread} -- %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- logger name="co.jp.arche1.kpms.common.ManagingService" additivity="false" level="INFO" -->
+    <logger name="ServiceLog" additivity="false" level="INFO">
+        <appender-ref ref="SERVICE_LOGGING_FILE"/>
+    </logger>
+
+</configuration>
