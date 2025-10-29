@@ -3,11 +3,8 @@ package co.jp.enon.tms.usermaintenance.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.beans.propertyeditors.CustomDateEditor;
-//import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.context.MessageSource;
+
 import org.springframework.web.bind.annotation.PutMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.jp.enon.tms.usermaintenance.dto.UserDeleteDto;
-import co.jp.enon.tms.usermaintenance.dto.UserSearchAllDto;
 import co.jp.enon.tms.usermaintenance.dto.UserSearchManyDto;
 import co.jp.enon.tms.usermaintenance.dto.UserSearchOneDto;
 import co.jp.enon.tms.usermaintenance.dto.UserUpdateDto;
@@ -29,9 +25,6 @@ public class UserMaintenanceController {
 
 	@Autowired
 	UserService userService;
-
-	@Autowired
-	MessageSource msg;
 
 
 	// All user search

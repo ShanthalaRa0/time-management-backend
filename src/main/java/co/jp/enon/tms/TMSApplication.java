@@ -33,7 +33,8 @@ public class TMSApplication {
 
 					// A required, comma-separated list of origins that are allowed to access the API deployment.
 					// If you want to send cookies in an XMLHttpRequest across origins, you need to explicitly specify the origins for which CORS is allowed.
-					.allowedOrigins("*")
+//					.allowedOrigins("*")
+					.allowedOriginPatterns("*")
 					//.allowedOrigins(CrossOrigin.DEFAULT_ORIGINS)
 
 					// An optional comma-separated list of HTTP headers that are allowed in the actual request to the API deployment
